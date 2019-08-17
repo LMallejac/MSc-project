@@ -1,0 +1,12 @@
+- adapteur qui transforme les nodes aifdb en node cytoscape
+- pareil pour les segments
+
+- utiliser un layout
+
+- context sur ton app
+  - contient les cytoscape options
+  - definir des const pour tous les layout qui t,interessent
+  - definit un layout par defaut dans l'app quand tu crees le context
+- cree des button qui updatent le layout dans ton context
+
+- ameliorer la vitesse de generation des graphs
