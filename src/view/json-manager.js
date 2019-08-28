@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "semantic-ui-react";
+import { Button } from "primereact/button";
 
 // import getAifbData from "../api/get-aifdb-data"; // REAL
 import getAifdbData from "../api/6156"; // FAKE

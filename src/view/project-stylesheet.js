@@ -1,14 +1,4 @@
-import { colours } from "../common/constants";
-
-const NODE_CATEGORY = {
-  WEAPON: "Weapon",
-  MOTIVE: "Motive",
-  INTENT: "Intent",
-  OCCASION: "Occasion",
-  DEATH_CAUSE: "Cause of death",
-  SUSPECT: "Suspect",
-  VICTIM: "Victim"
-};
+import { colours, NODE_CATEGORY } from "../common/constants";
 
 const NODE_TYPE = {
   CONCLUSION: "Conclusion",
@@ -19,7 +9,7 @@ const COLOUR_SCHEME = {
   [NODE_CATEGORY.WEAPON]: colours.red,
   [NODE_CATEGORY.MOTIVE]: colours.orange,
   [NODE_CATEGORY.INTENT]: colours.blue,
-  [NODE_CATEGORY.OCCASION]: colours.black,
+  [NODE_CATEGORY.OPPORTUNITY]: colours.black,
   [NODE_CATEGORY.DEATH_CAUSE]: colours.purple,
   [NODE_CATEGORY.SUSPECT]: colours.green,
   [NODE_CATEGORY.VICTIM]: colours.burgundy
@@ -28,6 +18,8 @@ const COLOUR_SCHEME = {
 // ========== Utils
 
 const isTypeLink = nodeElement => type(nodeElement) === NODE_TYPE.LINK;
+const isTypeConclusion = nodeElement =>
+  type(nodeElement) === NODE_TYPE.CONCLUSION;
 const type = nodeElement => nodeElement.data("type");
 const category = nodeElement => nodeElement.data("category");
 
@@ -53,6 +45,15 @@ const getNodeBackgroundColor = nodeElement =>
     ? colours.grey
     : COLOUR_SCHEME[category(nodeElement)] || colours.black;
 
+const hideNodeIfCategoryNotVisible = visibleCategories => nodeElement => {
+  console.log(nodeElement.data("type"));
+  console.log(nodeElement.data("category"));
+  return !isTypeConclusion(nodeElement) &&
+    !visibleCategories.includes(category(nodeElement))
+    ? "none"
+    : "block";
+};
+
 // const getNodeColour = nodeElement =>
 //   type(nodeElement) === "Conclusion" ? "none" : "block";
 
@@ -63,34 +64,50 @@ const getNodeBackgroundColor = nodeElement =>
 // const edgeLength = nodeElement =>
 //   category(nodeElement) === "Motive" ? 1000 : 400;
 
-const CYTOSCAPE_STYLE = [
-  {
-    selector: "node",
-    style: {
-      shape: getNodeShape,
+const CYTOSCAPE_STYLE = visibleCategories => {
+  // console.log("ICI LA TERRE", visbleCategories);
+  return [
+    {
+      selector: "node",
+      style: {
+        display: hideNodeIfCategoryNotVisible(visibleCategories),
+        shape: getNodeShape,
 
-      "background-color": getNodeBackgroundColor,
-      "background-opacity": 1,
+        "background-color": getNodeBackgroundColor,
+        "background-opacity": 0.7,
+        //"background-image": "./chalk.png",
+        "background-image":
+          "https://cdn0.iconfinder.com/data/icons/healthcare-science-and-government/64/people-chalk-murder-outline-scene-crime-512.png",
+        "background-fit": "cover cover",
+        "background-image-opacity": 0.1,
 
-      width: getNodeSize,
-      height: getNodeSize,
+        width: getNodeSize,
+        height: getNodeSize,
 
-      avoidOverlap: true, // if true, prevents overlap of node bounding boxes
-      nodeDimensionsIncludeLabels: true, // whether labels should be included in determining the space used by a node
+        avoidOverlap: true, // if true, prevents overlap of node bounding boxes
+        nodeDimensionsIncludeLabels: true, // whether labels should be included in determining the space used by a node
 
-      padding: 20,
-      "padding-relative-to": "width",
+        padding: 20,
+        "padding-relative-to": "width",
 
-      color: "white",
-      label: "data(label)",
-      "text-halign": "center",
-      "text-valign": "center",
-      "text-max-width": "200px",
-      "text-wrap": "wrap"
-      //display: otherTest
-    }
-  },
-  /*{
+        color: "white",
+        "font-family": "Helvetica",
+        "font-weight": 400,
+        "font-size": 18,
+
+        label: "data(label)",
+        "text-halign": "center",
+        "text-valign": "center",
+        "text-max-width": "200px",
+        "text-wrap": "wrap",
+        "text-overflow-wrap": "anywhere",
+
+        "text-justification": "center",
+        "line-height": 1.5
+        //display: otherTest
+      }
+    },
+    /*{
     selector: "label",
     style: {
       color: "black",
@@ -98,15 +115,16 @@ const CYTOSCAPE_STYLE = [
       "font-size": "40px"
     }
   },*/
-  {
-    selector: "edge",
-    style: {
-      // "line-color": "grey",
-      "curve-style": "straight",
-      "source-arrow-shape": "square",
-      "target-arrow-shape": "triangle"
+    {
+      selector: "edge",
+      style: {
+        // "line-color": "grey",
+        "curve-style": "straight",
+        "source-arrow-shape": "square",
+        "target-arrow-shape": "triangle"
+      }
     }
-  }
-];
+  ];
+};
 
 export default CYTOSCAPE_STYLE;

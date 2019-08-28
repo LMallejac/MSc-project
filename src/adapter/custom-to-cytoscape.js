@@ -22,7 +22,7 @@ export default function customToCytoscape(customGraph) {
       }
     };
   });
-  console.log(cytoscapeEdges);
+  // console.log(cytoscapeEdges);
 
   const cytoscapeElements = { nodes: cytoscapeNodes, edges: cytoscapeEdges };
   return cytoscapeElements;
