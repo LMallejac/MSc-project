@@ -7,3 +7,8 @@ export const NODE_CATEGORY = {
   SUSPECT: "Suspect",
   VICTIM: "Victim"
 };
+
+export const NODE_TYPE = {
+  CONCLUSION: "Conclusion",
+  LINK: "Link"
+};

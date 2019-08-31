@@ -10,3 +10,206 @@
 - cree des button qui updatent le layout dans ton context
 
 - ameliorer la vitesse de generation des graphs
+
+
+
+
+
+############################################### TRASH
+
+import {
+
+  colours,
+
+  NODE_TYPE,
+
+  COLOUR_SCHEME,
+
+  SHAPE_SCHEME
+
+} from "../common/constants";
+
+
+
+// ========== Utils
+
+
+
+const isTypeLink = nodeElement => type(nodeElement) === NODE_TYPE.LINK;
+
+const isTypeConclusion = nodeElement =>
+
+  type(nodeElement) === NODE_TYPE.CONCLUSION;
+
+const type = nodeElement => nodeElement.data("type");
+
+const category = nodeElement => nodeElement.data("category");
+
+
+
+// ========== NODE STYLING
+
+
+
+const getNodeShape = nodeElement =>
+
+  SHAPE_SCHEME["SIMPLE"][type(nodeElement)] || SHAPE_SCHEME["SIMPLE"].default;
+
+
+
+const CYTOSCAPE_STYLEDE_PE.C  default: "l
+
+};
+  return [
+
+
+
+const getNodeBackcreateHideNodeIfCategoryNotVisible(visibleCategories)
+
+  isTypeLink(nodeElement)
+
+    ? colours.grey
+
+    : COLOUR_SCHEME["SIMPLE"][category(nodeElement)] || colours.black;
+
+
+
+const createHideNodeIfCategoryNotVisible = visibleCategories => nodeElement =>
+
+  !isTypeConclusion(nodeElement) &&
+
+  !visibleCategories.has(category(nodeElement))
+
+    ? "none"
+
+    : "block";c== EDGE STYLING
+
+
+
+const CYTOSCAPE_STYLE = visibleCategories => {
+
+  // console.log("Recomputing stylesheet");
+
+  // console.log("ICI LA TERRE", visbleCategories);
+
+  return [
+
+    {
+
+      selector: "node",
+
+      style: {
+
+        display: createHideNodeIfCategoryNotVisible(visibleCategories),
+
+        shape: getNodeShape,
+
+
+
+        "background-color": getNodeBackgroundColor,
+
+        "background-opacity": 0.7,
+
+        //"background-image": "./chalk.png",
+
+        "background-image":
+
+          "https://cdn0.iconfinder.com/data/icons/healthcare-science-and-government/64/people-chalk-murder-outline-scene-crime-512.png",
+
+        "background-fit": "cover cover",
+
+        "background-image-opacity": 0.1,
+
+leCYTOSCAPE_STYLE
+
+        width: getNodeSize,
+
+        height: getNodeSize,
+
+
+
+        avoidOverlap: true, // if true, prevents overlap of node bounding boxes
+
+        nodeDimensionsIncludeLabels: true, // whether labels should be included in determining the space used by a node
+
+
+
+        padding: 20,
+
+        "padding-relative-to": "width",
+
+
+
+        color: "white",
+
+        "font-family": "Helvetica",
+
+        "font-weight": 400,
+
+        "font-size": 18,
+
+
+
+        label: "data(label)",
+
+        "text-halign": "center",
+
+        "text-valign": "center",
+
+        "text-max-width": "200px",
+
+        "text-wrap": "wrap",
+
+        "text-overflow-wrap": "anywhere",
+
+
+
+        "text-justification": "center",
+
+        "line-height": 1.5
+
+      }
+
+    },
+
+    /*{
+
+    selector: "label",
+
+    style: {
+
+      color: "black",
+
+      position: "background",
+
+      "font-size": "40px"
+
+    }
+
+  },*/
+
+    {
+
+      selector: "edge",
+
+      style: {
+
+        // "line-color": "grey",
+
+        "curve-style": "straight",
+
+        "source-arrow-sc,
+
+        "target-arrow-shape": "triangle"
+
+      }
+
+    }
+
+  ];
+
+};
+
+
+
+export default CYTOSCAPE_STYLE;

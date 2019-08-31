@@ -5,5 +5,6 @@ export const colours = {
   black: "#0E0F11",
   purple: "#3626A7",
   green: "#8BD820",
-  burgundy: "#A10203"
+  burgundy: "#A10203",
+  grey: "pink"
 };
