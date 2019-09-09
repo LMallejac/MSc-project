@@ -10,5 +10,9 @@ export const NODE_CATEGORY = {
 
 export const NODE_TYPE = {
   CONCLUSION: "Conclusion",
-  LINK: "Link"
+  LINK: "Link",
+  OBSERVATION: "Observation",
+  EVIDENCE: "Evidence",
+  INTERPRETATION: "Interpretation",
+  FACT: "Fact"
 };

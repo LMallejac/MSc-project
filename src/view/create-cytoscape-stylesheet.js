@@ -27,16 +27,14 @@ const getNodeSize = nodeElement =>
   SIZE_BY_TYPE[type(nodeElement)] || SIZE_BY_TYPE.default;
 
 const getNodeBackgroundColor = colourSchemeName => nodeElement => {
-  console.log("iciiiiiiii", colourSchemeName);
-  console.log("laaaaaa", COLOUR_SCHEME[colourSchemeName]);
   return isTypeLink(nodeElement)
     ? colours.grey
     : COLOUR_SCHEME[colourSchemeName][category(nodeElement)] || colours.black;
 };
 
 const hideNodeIfCategoryNotVisible = visibleCategories => nodeElement => {
-  console.log(nodeElement.data("type"));
-  console.log(nodeElement.data("category"));
+  //console.log('Node type', nodeElement.data("type"));
+  //console.log('Node category', nodeElement.data("category"));
   return !isTypeConclusion(nodeElement) &&
     !visibleCategories.has(category(nodeElement))
     ? "none"
@@ -52,16 +50,16 @@ const createCytoscapeStylesheet = ({
   colourSchemeName,
   shapeSchemeName
 }) => {
-  console.log(colourSchemeName);
+  // console.log('Colour scheme', colourSchemeName);
   const nodeStyle = {
     display: hideNodeIfCategoryNotVisible(visibleCategories),
     shape: getNodeShape(shapeSchemeName),
 
     "background-color": getNodeBackgroundColor(colourSchemeName),
-    "background-opacity": 0.7,
+    "background-opacity": 0.8,
     //"background-image": "./chalk.png",
-    "background-image":
-      "https://cdn0.iconfinder.com/data/icons/healthcare-science-and-government/64/people-chalk-murder-outline-scene-crime-512.png",
+    /*"background-image":
+      "https://cdn0.iconfinder.com/data/icons/healthcare-science-and-government/64/people-chalk-murder-outline-scene-crime-512.png",*/
     "background-fit": "cover cover",
     "background-image-opacity": 0.1,
 

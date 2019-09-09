@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import styled from "styled-components";
-import cytoscape from "cytoscape";
-import cola from "cytoscape-cola";
 
 import { NODE_CATEGORY, LAYOUT } from "../common/constants";
 import getCustomData from "../api/ncis";
 import customToCytoscape from "../adapter/custom-to-cytoscape";
-import createCytoscapeStylesheet from "./project-stylesheet";
+import createCytoscapeStylesheet from "./create-cytoscape-stylesheet";
 
-cytoscape.use(cola);
-
-const INITIAL_CATEGORIES_VISIBILITY = new Set([NODE_CATEGORY.WEAPON]);
+const INITIAL_CATEGORIES_VISIBILITY = new Set(Object.values(NODE_CATEGORY)); // new Set([NODE_CATEGORY.WEAPON]);
 const INITIAL_CY_CALLBACK = { on: () => {} };
 
 const toggleCategory = (currentCategory, visibleCategoriesSet) => {
@@ -40,8 +36,10 @@ const createOnNodeClickHandler = (
 
 let cyCallback = INITIAL_CY_CALLBACK;
 
-function Project({ styleScheme }) {
+function Graph({ styleScheme }) {
   const { layoutName, ...customStyles } = styleScheme;
+  console.log("LayoutName", layoutName);
+
   const [visibleCategories, setVisibleCategories] = useState(
     INITIAL_CATEGORIES_VISIBILITY
   );
@@ -51,21 +49,20 @@ function Project({ styleScheme }) {
     customToCytoscape(data)
   );
 
-  // console.log("Hello - after rendering", visibleCategories);
   useEffect(() => {
     const onNodeClickHandler = createOnNodeClickHandler(
       visibleCategories,
       setVisibleCategories
     );
-    console.log("Update", visibleCategories);
     cyCallback.on("tap", "node", onNodeClickHandler);
-  }, [visibleCategories]);
+  }, [visibleCategories, layoutName]);
   const customLayout = LAYOUT[layoutName];
   const stylesheet = createCytoscapeStylesheet({
     visibleCategories,
     ...customStyles
   });
 
+  console.log("customLayout", customLayout);
   return (
     <StyledCytoscape
       elements={elements}
@@ -76,7 +73,7 @@ function Project({ styleScheme }) {
   );
 }
 
-export default Project;
+export default Graph;
 
 const StyledCytoscape = styled(CytoscapeComponent)`
   min-width: 200px;

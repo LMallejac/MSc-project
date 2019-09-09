@@ -8,26 +8,38 @@ import "primeicons/primeicons.css";
 
 import { SelectButton } from "primereact/selectbutton";
 
-import Project from "./view/project";
+import Graph from "./view/graph";
+import GraphWithExtension from "./view/graph-with-extension";
 import {
   COLOUR_SCHEME_NAMES,
   LAYOUT_NAMES,
   SHAPE_SCHEME_NAMES
 } from "./common/constants";
 
+//const INDEX_TO_LETTER = ["A", "B", "C", "D", "E", "F", "G"];
+//const INDEX_TO_LETTER = ["A", "B", "C", "D", "E", "F", "G"];
 const createSelectButtonOptions = valuesObject => {
   return Object.values(valuesObject).map((value, key) => {
     return {
       value,
-      // label: `Option ${key}`
+      //label: `Option ${key + 1}`
+      //label: `Option ${INDEX_TO_LETTER[key]}`
       label: value
     };
   });
 };
 
-const DEFAULT_COLOUR_SCHEME_NAME = COLOUR_SCHEME_NAMES.SIMPLE;
-const DEFAULT_LAYOUT_NAME = LAYOUT_NAMES.COLA_SPRINGY;
-const DEFAULT_SHAPE_SCHEME_NAME = SHAPE_SCHEME_NAMES.SIMPLE;
+const DEFAULT_COLOUR_SCHEME_NAME = COLOUR_SCHEME_NAMES.VIBRANT;
+const DEFAULT_LAYOUT_NAME = LAYOUT_NAMES.COSE;
+const DEFAULT_SHAPE_SCHEME_NAME = SHAPE_SCHEME_NAMES.OCTAGON;
+
+const LAYOUT_WITH_EXTENSION = [
+  LAYOUT_NAMES.COLA,
+  LAYOUT_NAMES.COLA_SPRINGY,
+  LAYOUT_NAMES.EULER,
+  LAYOUT_NAMES.DAGRE,
+  LAYOUT_NAMES.COSEBILKENT
+];
 
 function App() {
   const [colourSchemeName, setColourSchemeName] = useState(
@@ -44,6 +56,17 @@ function App() {
     layoutName: layoutName || DEFAULT_LAYOUT_NAME
   };
 
+  const GraphComponent = LAYOUT_WITH_EXTENSION.find(
+    name => name === customStyle.layoutName
+  )
+    ? GraphWithExtension
+    : Graph;
+
+  console.log(
+    "With extension or not ?",
+    LAYOUT_WITH_EXTENSION.find(name => name === customStyle.layoutName)
+  );
+
   return (
     <div className="App">
       <h1> Choose your style</h1>
@@ -57,14 +80,6 @@ function App() {
           />
         </div>
         <div>
-          <h2>Layout</h2>
-          <SelectButton
-            value={layoutName}
-            options={createSelectButtonOptions(LAYOUT_NAMES)}
-            onChange={event => setLayoutName(event.value)}
-          />
-        </div>
-        <div>
           <h2>Shape</h2>
           <SelectButton
             value={shapeSchemeName}
@@ -72,9 +87,17 @@ function App() {
             onChange={event => setShapeSchemeName(event.value)}
           />
         </div>
+        <div>
+          <h2>Layout</h2>
+          <SelectButton
+            value={layoutName}
+            options={createSelectButtonOptions(LAYOUT_NAMES)}
+            onChange={event => setLayoutName(event.value)}
+          />
+        </div>
       </StyleSelectorWrapper>
       <h1>Hung out to dry - NCIS, Season 1, Episode 2</h1>
-      <Project styleScheme={customStyle} />
+      <GraphComponent styleScheme={customStyle} />
     </div>
   );
 }
